@@ -37,8 +37,6 @@ export default function Charts({ rawData }) {
       return acc;
     }, { status: {}, dates: {} });
 
-    console.log(values);
-
     const statusData = {
       datasets: [
         {
@@ -46,14 +44,13 @@ export default function Charts({ rawData }) {
           backgroundColor: colors,
           borderColor: colors,
         },
-      ], // These labels appear in the legend and in the tooltips when hovering different arcs
+      ],
       labels: Object.keys(values.status),
     };
 
     const datesData = {
         labels: Object.keys(values.dates),
         datasets: Object.keys(values.status).map( (status, index) => {
-            console.log(status, Object.values(values.dates).map(date => date[status]));
             return {
                 label: status,
                 data: Object.values(values.dates).map(date => date[status]),
