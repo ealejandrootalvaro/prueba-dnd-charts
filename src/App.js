@@ -4,6 +4,9 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Columns from "./components/Columns";
+import Charts from "./components/Charts";
+
+import {rawData} from "./components/Charts/raw-data";
 
 import store from "./store";
 
@@ -25,7 +28,9 @@ function App() {
         </nav>
         <div className="container-fluid">
           <Switch>
-            <Route path="/graficos"></Route>
+            <Route path="/graficos">
+              <Charts rawData={rawData} />
+            </Route>
             <Route to="/">
               <Columns />
             </Route>
