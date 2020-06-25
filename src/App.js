@@ -8,6 +8,8 @@ import Charts from "./components/Charts";
 
 import {rawData} from "./components/Charts/raw-data";
 
+import columnData from './components/Columns/data';
+
 import store from "./store";
 
 import "./App.css";
@@ -32,7 +34,7 @@ function App() {
               <Charts rawData={rawData} />
             </Route>
             <Route to="/">
-              <Columns />
+              <Columns initialColumns={columnData} />
             </Route>
           </Switch>
         </div>

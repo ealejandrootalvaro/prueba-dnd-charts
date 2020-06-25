@@ -6,3 +6,15 @@
   text-align: center;
   font-weight: bold;
 }
+
+.columns__btn {
+  font-weight: bold;
+}
+
+.columns-pointer {
+  cursor: pointer;
+}
+
+.columns__btn--default {
+  color: #0069d9
+}

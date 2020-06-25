@@ -4,20 +4,42 @@ import { Doughnut, Line } from "react-chartjs-2";
 
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-
+/**
+ * Calcula el total para la grafica de torta
+ * @param {number} previus 
+ * @param { { total_amount } } row 
+ */
 function getTotal(previus, row) {
     return previus + parseInt(row.total_amount);
 }
 
+/**
+ * Agrupa los datos por estado ('APPROVED','PENDING','REJECTED') y usa 
+ * add para contar cuantos registros hay por estado
+ * @param {number} previus 
+ * @param { { total_amount } } row
+ */
 function groupByStatus(previus, row) {
     groupByRowField(previus, row, "status", 0, add);
     return previus;
 }
 
+/**
+ * Conteo de registros
+ * @param {add} previus 
+ */
 function add(previus) {
     return previus + 1;
 }
 
+/**
+ * Agrupa los datos crudos por campo y aplica una operación generica
+ * @param {*} acc Acumula los valores. Esta variable se usa en arr.reduce 
+ * @param {*} row Registro de los datos
+ * @param {*} field Campo que se usa en la agrupación
+ * @param {*} initialValue Valor inicial. Esta variable se usa en arr.reduce
+ * @param {*} operation Operación que aplica el reduce a los datos
+ */
 function groupByRowField(acc, row, field, initialValue, operation) {
     if (typeof acc[row[field]] === 'undefined') {
         acc[row[field]] = initialValue;
@@ -71,10 +93,10 @@ export default function Charts({ rawData }) {
 
   return (
     <div className="row" style={{ paddingTop: "25px" }}>
-      <div class="col-12 col-md-6">
+      <div className="col-12 col-md-6">
         <Doughnut plugins={[ChartDataLabels]} data={data.status} options={{ cutoutPercentage: 0 }} />
       </div>
-      <div class="col-12 col-md-6">
+      <div className="col-12 col-md-6">
           <Line data={data.dates} options={{ lineTension: 0 }} />
       </div>
     </div>

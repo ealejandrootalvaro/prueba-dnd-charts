@@ -6,6 +6,13 @@ import { FaSortAlphaDown } from "react-icons/fa";
 import { FaSortAlphaDownAlt } from "react-icons/fa";
 import { GrSort } from "react-icons/gr";
 
+/**
+ * 
+ * @param {column} Object Información de la columna { id: dentificador, text: Descripción }
+ * @param {index} number Numero de la columna al interior de la lista
+ * @param {moveColumn} Function Realiza el cambio de posición de la columna
+ * @param {changeOrder} Function Cambia el ordenamiento de la columna (asc, desc) 
+ */
 export default function Column({ column, index, moveColumn, changeOrder }) {
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -16,39 +23,41 @@ export default function Column({ column, index, moveColumn, changeOrder }) {
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-      // Don't replace items with themselves
+      // No hacer cambio cuando el item sea el mismo 
       if (dragIndex === hoverIndex) {
         return;
       }
-      // Determine rectangle on screen
+      /**
+       * Detección de colición
+       */
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      // Get vertical middle
+      
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      // Determine mouse position
+      
       const clientOffset = monitor.getClientOffset();
-      // Get pixels to the top
+      
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
+      /**
+       * Solo hacer el cambio cuando al menos la mitad del elemento este pasando la casilla
+       */
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
-      // Dragging upwards
+   
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      // Time to actually perform the action
+      // Si pasa esta parte se hace el movimiento
       moveColumn(dragIndex, hoverIndex);
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
+      // Actulizar el item del indice
       item.index = hoverIndex;
     },
   });
+
+  /**
+   * Aplicar estilos a la fila que se mueve
+   */
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.COLUMN, id: column.id, index },
     collect: (monitor) => ({
